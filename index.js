@@ -1,5 +1,7 @@
 const incognitas = []
 
+const tabla = []
+
 const patron = [
     ["r", "r"], ["r", "i"], ["r", "s"], 
     ["i", "r"], ["i", "s"], 
@@ -23,8 +25,17 @@ function llenarIncognitas() {
     
 }
 
+function meterInformacion(lugar, data) {
+    for (const cosita of tabla) {
+        if (cosita.lugar == lugar) {
+            cosita.data = data
+        }
+    }
+}
+
 function darIndices() {
     for (let i = 1; i <= 8; i++) {
+        let datoTabla = {}
         let fila = document.getElementById(i).children
         let numero = 0
         for (const casilla of fila) {
@@ -32,9 +43,16 @@ function darIndices() {
             let nombre = i + "" + numero
             casilla.setAttribute("id", nombre)
             casilla.setAttribute("onclick", "oprimir(this)")
+            casilla.setAttribute("oncontextmenu", "marcar(this)")
             casilla.innerHTML = 0
+            datoTabla = {
+                lugar: nombre, 
+                data: casilla.innerHTML
+            }
+            tabla.push(datoTabla)
         }
     }
+    console.log(tabla);
 }
 
 function darMinas() {
@@ -42,7 +60,9 @@ function darMinas() {
         let lugar = document.getElementById(mina)
         lugar.classList.add("mina")
         lugar.innerHTML = "🧨"
+        meterInformacion(mina, lugar.innerHTML)
     }
+    console.log(tabla);
 }
 
 function oprimir(casilla) {
@@ -51,6 +71,10 @@ function oprimir(casilla) {
     if (casilla.classList.contains("mina")) {
         alert("¡Bum!")
     }
+}
+
+function marcar(casilla) {
+    casilla.innerHTML = "🚩"
 }
 
 function darNumeros() {
@@ -93,14 +117,44 @@ function darNumeros() {
             } else {
                 let lugar = document.getElementById(n + "" + m)
                 if (!lugar.classList.contains("mina")) {
+                    lugar.classList.add("numero")
                     lugar.innerHTML++
+                    meterInformacion(n + "" + m, lugar.innerHTML)
+                    let clase = ""
+                    switch (lugar.innerHTML) {
+                        case "1": clase = "uno"; break;
+                        case "2": clase = "dos"; break;
+                        case "3": clase = "tres"; break;
+                        case "4": clase = "cuatro"; break
+                        case "5": clase = "cinco"; break
+                        case "6": clase = "seis"; break
+                        case "7": clase = "siete"; break
+                        case "8": clase = "ocho"; break
+                        default:
+                            alert("algo está mal")
+                            break;
+                    }
+                    lugar.classList.add(clase)
                 }
             }
         }
     }
+    console.log(tabla);
+}
+
+function limpiarCeros() {
+    let celdas = document.getElementsByTagName("td")
+    for (const celda of celdas) {
+        if (celda.innerHTML == "0") {
+            celda.innerHTML = " "
+            meterInformacion(celda.id, celda.innerHTML)
+        }
+    }
+    console.log(tabla);
 }
 
 llenarIncognitas()
 darIndices()
 darMinas()
 darNumeros()
+limpiarCeros()

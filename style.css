@@ -1,7 +1,48 @@
 td, table {
     border: 1px solid black;
 }
+h1 {
+    text-align: center;
+}
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+td {
+    background-color: gainsboro;
+    width: 20px;
+    height: 20px;
+}
 
 .mina {
     background-color: yellow;
+}
+.numero {
+    font-weight: bolder;
+    text-align: center;
+}
+
+.uno {
+    color: blue;
+}
+.dos {
+    color: green;
+}
+.tres {
+    color: red;
+}
+.cuatro {
+    color: purple;
+}
+.cinco {
+    color: brown;
+}
+.seis {
+    color: darkcyan;
+}
+.siete {
+    color: black;
+}
+.ocho {
+    color: gray;
 }
