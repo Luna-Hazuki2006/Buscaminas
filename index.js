@@ -12,11 +12,15 @@ function random() {
 
 function llenarIncognitas() {
     for (let i = 0; i < 10; i++) {
-        n = random()
-        m = random()
-        nm = n + "" + m
+        let n, m, nm
+        do {
+            n = random()
+            m = random()
+            nm = n + "" + m
+        } while (incognitas.includes(nm));
         incognitas.push(nm)
     }
+    
 }
 
 function darIndices() {
