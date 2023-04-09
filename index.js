@@ -81,7 +81,20 @@ function oprimir(casilla) {
     info = sacarInformacion(casilla.id)
     casilla.innerHTML = info
     if (info == "🧨") {
-        casilla.classList.add("mina")
+        for (const mina of incognitas) {
+            let lugar = document.getElementById(mina)
+            if (lugar.innerHTML != "🚩") {
+                lugar.classList.add("mina")
+                lugar.innerHTML = "🧨"
+            }
+        }
+        let casillas = document.getElementsByTagName("td")
+        for (const esto of casillas) {
+            esto.removeAttribute("onclick")
+            esto.removeAttribute("oncontextmenu")
+        }
+        let final = document.getElementById("final")
+        final.innerHTML = "¡Perdiste! 😔"
         alert("¡Bum!")
     } else if (info != " ") {
         let clase = ""
@@ -122,7 +135,18 @@ function marcar(casilla) {
     let contador = document.getElementById("contador")
     contador.innerHTML = "Bombas encontradas: " + bombas
     if (bombas == incognitas.length) {
-        alert("¡Ganaste!")
+        let verdad = true
+        for (const mina of incognitas) {
+            let lugar = document.getElementById(mina)
+            if (lugar != "🚩") {
+                verdad = false
+            }
+        }
+        console.log("verdad");
+        console.log(verdad);
+        if (verdad) {
+            alert("¡Ganaste!")
+        }
     }
 }
 
