@@ -95,7 +95,10 @@ function oprimir(casilla) {
         }
         let final = document.getElementById("final")
         final.innerHTML = "¡Perdiste! 😔"
+        let audio = new Audio("assets/midi-holiday-country.mp3")
+        audio.play()
         alert("¡Bum!")
+
     } else if (info != " ") {
         let clase = ""
         switch (info) {
@@ -216,6 +219,12 @@ function limpiarCeros() {
     }
     console.log(tabla);
 }
+
+// let myVar = setInterval(myTimer, 0);
+// function myTimer() {
+//     const d = new Date();
+//     document.getElementById("tiempo").innerHTML = d.toLocaleTimeString();
+// }
 
 llenarIncognitas()
 darIndices()
