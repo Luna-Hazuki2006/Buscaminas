@@ -138,14 +138,21 @@ function marcar(casilla) {
         let verdad = true
         for (const mina of incognitas) {
             let lugar = document.getElementById(mina)
-            if (lugar != "🚩") {
+            if (lugar.innerHTML != "🚩") {
                 verdad = false
             }
         }
         console.log("verdad");
         console.log(verdad);
         if (verdad) {
-            alert("¡Ganaste!")
+            let casillas = document.getElementsByTagName("td")
+            for (const esto of casillas) {
+                esto.removeAttribute("onclick")
+                esto.removeAttribute("oncontextmenu")
+            }
+            let final = document.getElementById("final")
+            final.innerHTML = "¡Ganaste! ✨"
+            alert("¡Ganaste! ✨")
         }
     }
 }
