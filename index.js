@@ -148,6 +148,8 @@ function marcar(casilla) {
         console.log("verdad");
         console.log(verdad);
         if (verdad) {
+            let audio = new Audio("assets/berdly_audience.ogg")
+            audio.play()
             let casillas = document.getElementsByTagName("td")
             for (const esto of casillas) {
                 esto.removeAttribute("onclick")
