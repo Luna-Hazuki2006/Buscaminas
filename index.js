@@ -74,6 +74,22 @@ function darMinas() {
     console.log(tabla);
 }
 
+function darClaseNumeros(casilla, info) {
+    let clase = ""
+    switch (info) {
+        case 1: clase = "uno"; break;
+        case 2: clase = "dos"; break;
+        case 3: clase = "tres"; break;
+        case 4: clase = "cuatro"; break
+        case 5: clase = "cinco"; break
+        case 6: clase = "seis"; break
+        case 7: clase = "siete"; break
+        case 8: clase = "ocho"; break
+        default: alert("algo está mal"); break;
+    }
+    casilla.classList.add(clase)
+}
+
 function oprimir(casilla) {
     casilla.removeAttribute("onclick")
     casilla.removeAttribute("oncontextmenu")
@@ -98,21 +114,41 @@ function oprimir(casilla) {
         let audio = new Audio("assets/midi-holiday-country.mp3")
         audio.play()
         alert("¡Bum!")
-
     } else if (info != " ") {
-        let clase = ""
-        switch (info) {
-            case 1: clase = "uno"; break;
-            case 2: clase = "dos"; break;
-            case 3: clase = "tres"; break;
-            case 4: clase = "cuatro"; break
-            case 5: clase = "cinco"; break
-            case 6: clase = "seis"; break
-            case 7: clase = "siete"; break
-            case 8: clase = "ocho"; break
-            default: alert("algo está mal"); break;
+        darClaseNumeros(casilla, info)
+    } else {
+        let dato = casilla.id
+        for (const datos of patron) {
+            let n = dato[0]
+            let m = dato[1]
+            switch (datos[0]) {
+                case "i": n = n; break;
+                case "r": n++; break
+                case "s": n--; break
+                default: alert("algo está mal"); break;
+            }
+            switch (datos[1]) {
+                case "i": m = m; break;
+                case "r": m++; break
+                case "s": m--; break
+                default: alert("algo está mal"); break;
+            }
+            if (n < 1 || n > 8 || m < 1 || m > 8) {
+                console.log("este no existe")
+            } else {
+                let lugar = document.getElementById(n + "" + m)
+                let real = sacarInformacion(lugar.id)
+                lugar.removeAttribute("onclick")
+                lugar.removeAttribute("oncontextmenu")
+                lugar.classList.add("tocado")
+                console.log(real);
+                if (real != " " && real != "🧨") {
+                    console.log("verdades");
+                    darClaseNumeros(lugar, real)
+                    lugar.innerHTML = real
+                }
+            }
         }
-        casilla.classList.add(clase)
     }
 }
 
