@@ -11,6 +11,8 @@ table {
 td {
     width: 20px;
     height: 20px;
+    font-weight: bolder;
+    text-align: center;
 }
 .vacio {
     background-color: gray;
@@ -23,10 +25,6 @@ td {
 }
 .mina {
     background-color: yellow;
-}
-.numero {
-    font-weight: bolder;
-    text-align: center;
 }
 
 .uno {

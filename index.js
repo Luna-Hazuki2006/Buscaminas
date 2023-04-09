@@ -34,9 +34,9 @@ function meterInformacion(lugar, data) {
 }
 
 function sacarInformacion(lugar) {
-    for (let i = 0; i < tabla.length; i++) {
-        if (tabla[i].lugar == lugar) {
-            return i
+    for (const cosita of tabla) {
+        if (cosita.lugar == lugar) {
+            return cosita.data
         }
     }
 }
@@ -53,7 +53,7 @@ function darIndices() {
             casilla.setAttribute("onclick", "oprimir(this)")
             casilla.setAttribute("oncontextmenu", "marcar(this)")
             casilla.classList.add("vacio")
-            casilla.innerHTML = 0
+            casilla.innerHTML = " "
             datoTabla = {
                 lugar: nombre, 
                 data: casilla.innerHTML
@@ -75,15 +75,30 @@ function darMinas() {
 }
 
 function oprimir(casilla) {
-    console.log(casilla.innerHTML);
-    console.log(incognitas);
-    if (casilla.classList.contains("mina")) {
+    casilla.removeAttribute("onclick")
+    casilla.removeAttribute("oncontextmenu")
+    info = sacarInformacion(casilla.id)
+    if (info == "🧨") {
+        casilla.innerHTML = info
+        casilla.classList.add("mina")
         alert("¡Bum!")
     }
+    // console.log(casilla.innerHTML);
+    // console.log(incognitas);
+    // if (casilla.classList.contains("mina")) {
+    //     alert("¡Bum!")
+    // }
 }
 
 function marcar(casilla) {
-    casilla.innerHTML = "🚩"
+    let marca = " "
+    switch (casilla.innerHTML) {
+        case "🚩": marca = "❓"; break;
+        case "❓": marca = " "; break;
+        case " ": marca = "🚩"; break;
+        default: alert("algo está mal"); break;
+    }
+    casilla.innerHTML = marca
 }
 
 function darNumeros() {
@@ -116,10 +131,12 @@ function darNumeros() {
                 // if (!lugar.classList.contains("mina")) {
                 //     lugar.classList.add("numero")
                 //     lugar.innerHTML++
-                let lugar = tabla[meterInformacion(n + "" + m)]
-                if (lugar.data != "🧨") {
-                    lugar.data++
-                    meterInformacion(n + "" + m, lugar.data)
+                let lugar = sacarInformacion(n + "" + m)
+                console.log("lugar");
+                console.log(lugar);
+                if (lugar != "🧨") {
+                    lugar++
+                    meterInformacion(n + "" + m, lugar)
                     // let clase = ""
                     // switch (lugar.innerHTML) {
                     //     case "1": clase = "uno"; break;
@@ -143,11 +160,17 @@ function darNumeros() {
 }
 
 function limpiarCeros() {
-    let celdas = document.getElementsByTagName("td")
-    for (const celda of celdas) {
-        if (celda.innerHTML == "0") {
-            celda.innerHTML = " "
-            meterInformacion(celda.id, celda.innerHTML)
+    // let celdas = document.getElementsByTagName("td")
+    // for (const celda of celdas) {
+    //     if (celda.innerHTML == "0") {
+    //         celda.innerHTML = " "
+    //         meterInformacion(celda.id, celda.innerHTML)
+    //     }
+    // }
+    for (const cosita of tabla) {
+        if (cosita.data == "0") {
+            cosita.data = " "
+            meterInformacion(cosita.lugar, cosita.data)
         }
     }
     console.log(tabla);
