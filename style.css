@@ -9,11 +9,18 @@ table {
     margin-right: auto;
 }
 td {
-    background-color: gainsboro;
     width: 20px;
     height: 20px;
 }
-
+.vacio {
+    background-color: gray;
+}
+.vacio:hover {
+    background-color: gainsboro;
+}
+.tocado {
+    background-color: gainsboro;
+}
 .mina {
     background-color: yellow;
 }
