@@ -1,0 +1,54 @@
+td, table {
+    border: 1px solid black;
+}
+h1, h3 {
+    text-align: center;
+}
+table {
+    margin-left: auto;
+    margin-right: auto;
+    background-image: linear-gradient(yellow, blue, red);
+}
+td {
+    width: 20px;
+    height: 20px;
+    font-weight: bolder;
+    text-align: center;
+}
+.vacio {
+    background-color: gray;
+}
+.vacio:hover {
+    background-color: gainsboro;
+}
+.tocado {
+    background-color: gainsboro;
+}
+.mina {
+    background-color: yellow;
+}
+
+.uno {
+    color: blue;
+}
+.dos {
+    color: green;
+}
+.tres {
+    color: red;
+}
+.cuatro {
+    color: purple;
+}
+.cinco {
+    color: brown;
+}
+.seis {
+    color: darkcyan;
+}
+.siete {
+    color: black;
+}
+.ocho {
+    color: gray;
+}
