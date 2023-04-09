@@ -1,5 +1,5 @@
 const incognitas = []
-
+let bombas = 0
 const tabla = []
 
 const patron = [
@@ -77,28 +77,53 @@ function darMinas() {
 function oprimir(casilla) {
     casilla.removeAttribute("onclick")
     casilla.removeAttribute("oncontextmenu")
+    casilla.classList.add("tocado")
     info = sacarInformacion(casilla.id)
+    casilla.innerHTML = info
     if (info == "🧨") {
-        casilla.innerHTML = info
         casilla.classList.add("mina")
         alert("¡Bum!")
+    } else if (info != " ") {
+        let clase = ""
+        switch (info) {
+            case 1: clase = "uno"; break;
+            case 2: clase = "dos"; break;
+            case 3: clase = "tres"; break;
+            case 4: clase = "cuatro"; break
+            case 5: clase = "cinco"; break
+            case 6: clase = "seis"; break
+            case 7: clase = "siete"; break
+            case 8: clase = "ocho"; break
+            default: alert("algo está mal"); break;
+        }
+        casilla.classList.add(clase)
     }
-    // console.log(casilla.innerHTML);
-    // console.log(incognitas);
-    // if (casilla.classList.contains("mina")) {
-    //     alert("¡Bum!")
-    // }
 }
 
 function marcar(casilla) {
     let marca = " "
     switch (casilla.innerHTML) {
-        case "🚩": marca = "❓"; break;
-        case "❓": marca = " "; break;
-        case " ": marca = "🚩"; break;
+        case "🚩": 
+            marca = "❓";
+            bombas-- 
+            break;
+        case "❓": 
+            marca = " "; 
+            casilla.setAttribute("onclick", "oprimir(this)")
+            break;
+        case " ": 
+            marca = "🚩"; 
+            casilla.removeAttribute("onclick")
+            bombas++
+            break;
         default: alert("algo está mal"); break;
     }
     casilla.innerHTML = marca
+    let contador = document.getElementById("contador")
+    contador.innerHTML = "Bombas encontradas: " + bombas
+    if (bombas == incognitas.length) {
+        alert("¡Ganaste!")
+    }
 }
 
 function darNumeros() {
@@ -137,21 +162,6 @@ function darNumeros() {
                 if (lugar != "🧨") {
                     lugar++
                     meterInformacion(n + "" + m, lugar)
-                    // let clase = ""
-                    // switch (lugar.innerHTML) {
-                    //     case "1": clase = "uno"; break;
-                    //     case "2": clase = "dos"; break;
-                    //     case "3": clase = "tres"; break;
-                    //     case "4": clase = "cuatro"; break
-                    //     case "5": clase = "cinco"; break
-                    //     case "6": clase = "seis"; break
-                    //     case "7": clase = "siete"; break
-                    //     case "8": clase = "ocho"; break
-                    //     default:
-                    //         alert("algo está mal")
-                    //         break;
-                    // }
-                    // lugar.classList.add(clase)
                 }
             }
         }
