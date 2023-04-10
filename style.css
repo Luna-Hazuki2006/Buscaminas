@@ -15,6 +15,9 @@ td {
     font-weight: bolder;
     text-align: center;
 }
+#decision * {
+    margin: 2px;
+}
 .centro {
     display: flex;
     justify-content: center;

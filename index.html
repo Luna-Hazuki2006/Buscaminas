@@ -14,8 +14,17 @@
     <h3 id="contador">Bombas encontradas: 0</h3>
     <h3 id="tiempo"></h3>
     <h3 id="final"></h3>
+    <div id="decision" class="centro">
+        <label for="dificultad">Dificultad: </label>
+        <select name="dificultad" id="dificultad">
+            <option value="facil">Fácil</option>
+            <option value="media">Media</option>
+            <option value="dificil">Difícil</option>
+        </select>
+        <button type="button" id="eleccion" onclick="reiniciar()">Elegir</button>
+    </div><br>
     <div class="centro">
-        <button onclick="reiniciar()">Reiniciar</button>
+        <button type="button" onclick="reiniciar()">Reiniciar</button>
     </div><br>
     <table oncontextmenu="return false;" id="tablero">
         <tr id="1">

@@ -1,6 +1,9 @@
 let incognitas = []
 let bombas = 0
 let tabla = []
+let filas = 8
+let columnas = 8
+let bombasTotales = 10
 let ganar = new Audio("assets/berdly_audience.ogg")
 let perder = new Audio("assets/midi-holiday-country.mp3")
 
@@ -10,16 +13,33 @@ const patron = [
     ["s", "r"], ["s", "i"], ["s", "s"]
 ]
 
-function random() {
-    return Math.floor(Math.random() * 8) + 1
+function randomFila() {
+    return Math.floor(Math.random() * filas) + 1
+}
+
+function randomColumna() {
+    return Math.floor(Math.random() * columnas) + 1
+}
+
+function llenarTabla() {
+    let tablero = document.getElementById("tablero")
+    info = ""
+    for (let i = 1; i <= filas; i++) {
+        info += '<tr id="' + i + '">'
+        for (let j = 1; j <= columnas; j++) {
+            info += "<td></td>"
+        }
+        info += "</tr>"
+    }
+    tablero.innerHTML = info
 }
 
 function llenarIncognitas() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < bombasTotales; i++) {
         let n, m, nm
         do {
-            n = random()
-            m = random()
+            n = randomFila()
+            m = randomColumna()
             nm = n + "" + m
         } while (incognitas.includes(nm));
         incognitas.push(nm)
@@ -53,7 +73,7 @@ function sacarRealidad(lugar) {
 }
 
 function darIndices() {
-    for (let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= filas; i++) {
         let datoTabla = {}
         let fila = document.getElementById(i).children
         let numero = 0
@@ -97,7 +117,7 @@ function darClaseNumeros(casilla, info) {
         case 6: clase = "seis"; break
         case 7: clase = "siete"; break
         case 8: clase = "ocho"; break
-        default: alert("algo está mal"); break;
+        default: alert("algo está mal (numeros)"); break;
     }
     casilla.classList.add(clase)
 }
@@ -121,9 +141,9 @@ function llenarBlancos(casilla) {
             case "i": m = m; break;
             case "r": m++; break
             case "s": m--; break
-            default: alert("algo está mal"); break;
+            default: alert("algo está mal (blancos)"); break;
         }
-        if (n < 1 || n > 8 || m < 1 || m > 8) {
+        if (n < 1 || n > filas || m < 1 || m > columnas) {
             console.log("este no existe")
         } else {
             let lugar = document.getElementById(n + "" + m)
@@ -141,39 +161,6 @@ function llenarBlancos(casilla) {
             }
         }
     }
-    // for (const datos of patron) {
-    //     let n = dato[0]
-    //     let m = dato[1]
-    //     switch (datos[0]) {
-    //         case "i": n = n; break;
-    //         case "r": n++; break
-    //         case "s": n--; break
-    //         default: alert("algo está mal"); break;
-    //     }
-    //     switch (datos[1]) {
-    //         case "i": m = m; break;
-    //         case "r": m++; break
-    //         case "s": m--; break
-    //         default: alert("algo está mal"); break;
-    //     }
-    //     if (n < 1 || n > 8 || m < 1 || m > 8) {
-    //         console.log("este no existe")
-    //     } else {
-    //         let lugar = document.getElementById(n + "" + m)
-    //         let real = sacarInformacion(lugar.id)
-    //         lugar.removeAttribute("onclick")
-    //         lugar.removeAttribute("oncontextmenu")
-    //         lugar.classList.add("tocado")
-    //         console.log(real);
-    //         if (real != " ") {
-    //             console.log("verdades");
-    //             darClaseNumeros(lugar, real)
-    //             lugar.innerHTML = real
-    //         } else {
-    //             llenarBlancos(casilla)
-    //         }
-    //     }
-    // }
 }
 
 function oprimir(casilla) {
@@ -222,7 +209,7 @@ function marcar(casilla) {
             casilla.removeAttribute("onclick")
             bombas++
             break;
-        default: alert("algo está mal"); break;
+        default: alert("algo está mal (marcar)"); break;
     }
     casilla.innerHTML = marca
     let contador = document.getElementById("contador")
@@ -263,7 +250,7 @@ function darNumeros() {
                 case "r": n++; break
                 case "s": n--; break
                 default:
-                    alert("algo está mal")
+                    alert("algo está muy mal")
                     break;
             }
             switch (datos[1]) {
@@ -271,10 +258,10 @@ function darNumeros() {
                 case "r": m++; break
                 case "s": m--; break
                 default:
-                    alert("algo está mal")
+                    alert("algo está muy mal")
                     break;
             }
-            if (n < 1 || n > 8 || m < 1 || m > 8) {
+            if (n < 1 || n > filas || m < 1 || m > columnas) {
                 console.log("este no existe")
             } else {
                 // let lugar = document.getElementById(n + "" + m)
@@ -312,6 +299,27 @@ function limpiarCeros() {
 }
 
 function reiniciar() {
+    let lista = document.getElementById("dificultad")
+    let opcion = lista.options[lista.selectedIndex].value
+    switch (opcion) {
+        case "facil":
+            bombasTotales = 10
+            filas = 8
+            columnas = 8
+            break;
+        case "media":
+            bombasTotales = 44
+            filas = 16
+            columnas = 16
+            break
+        case "dificil":
+            bombasTotales = 99
+            filas = 16
+            columnas = 30
+            break
+        default: alert("algo esta MUY mal"); break;
+    }
+    llenarTabla()
     incognitas = []
     bombas = 0
     tabla = []
