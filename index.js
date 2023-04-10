@@ -1,6 +1,8 @@
-const incognitas = []
+let incognitas = []
 let bombas = 0
-const tabla = []
+let tabla = []
+let ganar = new Audio("assets/berdly_audience.ogg")
+let perder = new Audio("assets/midi-holiday-country.mp3")
 
 const patron = [
     ["r", "r"], ["r", "i"], ["r", "s"], 
@@ -25,10 +27,11 @@ function llenarIncognitas() {
     
 }
 
-function meterInformacion(lugar, data) {
+function meterInformacion(lugar, data, uso) {
     for (const cosita of tabla) {
         if (cosita.lugar == lugar) {
             cosita.data = data
+            cosita.uso = uso
         }
     }
 }
@@ -37,6 +40,14 @@ function sacarInformacion(lugar) {
     for (const cosita of tabla) {
         if (cosita.lugar == lugar) {
             return cosita.data
+        }
+    }
+}
+
+function sacarRealidad(lugar) {
+    for (const cosita of tabla) {
+        if (cosita.lugar == lugar) {
+            return cosita.uso
         }
     }
 }
@@ -56,7 +67,8 @@ function darIndices() {
             casilla.innerHTML = " "
             datoTabla = {
                 lugar: nombre, 
-                data: casilla.innerHTML
+                data: casilla.innerHTML, 
+                uso: false
             }
             tabla.push(datoTabla)
         }
@@ -69,7 +81,7 @@ function darMinas() {
         let lugar = document.getElementById(mina)
         // lugar.classList.add("mina")
         // lugar.innerHTML = "🧨"
-        meterInformacion(mina, "🧨")
+        meterInformacion(mina, "🧨", true)
     }
     console.log(tabla);
 }
@@ -88,6 +100,80 @@ function darClaseNumeros(casilla, info) {
         default: alert("algo está mal"); break;
     }
     casilla.classList.add(clase)
+}
+
+function llenarBlancos(casilla) {
+    let dato = casilla.id
+    let verdad = sacarRealidad(dato)
+    console.log(verdad);
+    if (verdad) return
+    meterInformacion(dato, casilla.innerHTML, true)
+    for (const datos of patron) {
+        let n = dato[0]
+        let m = dato[1]
+        switch (datos[0]) {
+            case "i": n = n; break;
+            case "r": n++; break
+            case "s": n--; break
+            default: alert("algo está mal"); break;
+        }
+        switch (datos[1]) {
+            case "i": m = m; break;
+            case "r": m++; break
+            case "s": m--; break
+            default: alert("algo está mal"); break;
+        }
+        if (n < 1 || n > 8 || m < 1 || m > 8) {
+            console.log("este no existe")
+        } else {
+            let lugar = document.getElementById(n + "" + m)
+            let real = sacarInformacion(lugar.id)
+            lugar.removeAttribute("onclick")
+            lugar.removeAttribute("oncontextmenu")
+            lugar.classList.add("tocado")
+            console.log(real);
+            if (real != " ") {
+                console.log("verdades");
+                darClaseNumeros(lugar, real)
+                lugar.innerHTML = real
+            } else {
+                llenarBlancos(lugar)
+            }
+        }
+    }
+    // for (const datos of patron) {
+    //     let n = dato[0]
+    //     let m = dato[1]
+    //     switch (datos[0]) {
+    //         case "i": n = n; break;
+    //         case "r": n++; break
+    //         case "s": n--; break
+    //         default: alert("algo está mal"); break;
+    //     }
+    //     switch (datos[1]) {
+    //         case "i": m = m; break;
+    //         case "r": m++; break
+    //         case "s": m--; break
+    //         default: alert("algo está mal"); break;
+    //     }
+    //     if (n < 1 || n > 8 || m < 1 || m > 8) {
+    //         console.log("este no existe")
+    //     } else {
+    //         let lugar = document.getElementById(n + "" + m)
+    //         let real = sacarInformacion(lugar.id)
+    //         lugar.removeAttribute("onclick")
+    //         lugar.removeAttribute("oncontextmenu")
+    //         lugar.classList.add("tocado")
+    //         console.log(real);
+    //         if (real != " ") {
+    //             console.log("verdades");
+    //             darClaseNumeros(lugar, real)
+    //             lugar.innerHTML = real
+    //         } else {
+    //             llenarBlancos(casilla)
+    //         }
+    //     }
+    // }
 }
 
 function oprimir(casilla) {
@@ -111,44 +197,12 @@ function oprimir(casilla) {
         }
         let final = document.getElementById("final")
         final.innerHTML = "¡Perdiste! 😔"
-        let audio = new Audio("assets/midi-holiday-country.mp3")
-        audio.play()
+        perder.play()
         alert("¡Bum!")
     } else if (info != " ") {
         darClaseNumeros(casilla, info)
     } else {
-        let dato = casilla.id
-        for (const datos of patron) {
-            let n = dato[0]
-            let m = dato[1]
-            switch (datos[0]) {
-                case "i": n = n; break;
-                case "r": n++; break
-                case "s": n--; break
-                default: alert("algo está mal"); break;
-            }
-            switch (datos[1]) {
-                case "i": m = m; break;
-                case "r": m++; break
-                case "s": m--; break
-                default: alert("algo está mal"); break;
-            }
-            if (n < 1 || n > 8 || m < 1 || m > 8) {
-                console.log("este no existe")
-            } else {
-                let lugar = document.getElementById(n + "" + m)
-                let real = sacarInformacion(lugar.id)
-                lugar.removeAttribute("onclick")
-                lugar.removeAttribute("oncontextmenu")
-                lugar.classList.add("tocado")
-                console.log(real);
-                if (real != " " && real != "🧨") {
-                    console.log("verdades");
-                    darClaseNumeros(lugar, real)
-                    lugar.innerHTML = real
-                }
-            }
-        }
+        llenarBlancos(casilla)
     }
 }
 
@@ -184,8 +238,7 @@ function marcar(casilla) {
         console.log("verdad");
         console.log(verdad);
         if (verdad) {
-            let audio = new Audio("assets/berdly_audience.ogg")
-            audio.play()
+            ganar.play()
             let casillas = document.getElementsByTagName("td")
             for (const esto of casillas) {
                 esto.removeAttribute("onclick")
@@ -233,7 +286,7 @@ function darNumeros() {
                 console.log(lugar);
                 if (lugar != "🧨") {
                     lugar++
-                    meterInformacion(n + "" + m, lugar)
+                    meterInformacion(n + "" + m, lugar, true)
                 }
             }
         }
@@ -252,10 +305,31 @@ function limpiarCeros() {
     for (const cosita of tabla) {
         if (cosita.data == "0") {
             cosita.data = " "
-            meterInformacion(cosita.lugar, cosita.data)
+            meterInformacion(cosita.lugar, cosita.data, false)
         }
     }
     console.log(tabla);
+}
+
+function reiniciar() {
+    incognitas = []
+    bombas = 0
+    tabla = []
+    document.getElementById("final").innerHTML = ""
+    document.getElementById("tiempo").innerHTML = ""
+    document.getElementById("contador").innerHTML = "Bombas encontradas: 0"
+    let cositas = document.getElementsByTagName("td")
+    for (const lugar of cositas) {
+        lugar.removeAttribute("class")
+        lugar.classList.add("vacio")
+    }
+    perder.pause()
+    ganar.pause()
+    llenarIncognitas()
+    darIndices()
+    darMinas()
+    darNumeros()
+    limpiarCeros()
 }
 
 // let myVar = setInterval(myTimer, 0);
@@ -264,8 +338,4 @@ function limpiarCeros() {
 //     document.getElementById("tiempo").innerHTML = d.toLocaleTimeString();
 // }
 
-llenarIncognitas()
-darIndices()
-darMinas()
-darNumeros()
-limpiarCeros()
+reiniciar()

@@ -15,6 +15,11 @@ td {
     font-weight: bolder;
     text-align: center;
 }
+.centro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .vacio {
     background-color: gray;
 }
