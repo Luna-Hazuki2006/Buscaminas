@@ -40,7 +40,7 @@ function llenarIncognitas() {
         do {
             n = randomFila()
             m = randomColumna()
-            nm = n + "" + m
+            nm = n + "-" + m
         } while (incognitas.includes(nm));
         incognitas.push(nm)
     }
@@ -79,7 +79,7 @@ function darIndices() {
         let numero = 0
         for (const casilla of fila) {
             numero++
-            let nombre = i + "" + numero
+            let nombre = i + "-" + numero
             casilla.setAttribute("id", nombre)
             casilla.setAttribute("onclick", "oprimir(this)")
             casilla.setAttribute("oncontextmenu", "marcar(this)")
@@ -129,8 +129,9 @@ function llenarBlancos(casilla) {
     if (verdad) return
     meterInformacion(dato, casilla.innerHTML, true)
     for (const datos of patron) {
-        let n = dato[0]
-        let m = dato[1]
+        let originario = dato.split("-")
+        let n = originario[0]
+        let m = originario[1]
         switch (datos[0]) {
             case "i": n = n; break;
             case "r": n++; break
@@ -146,7 +147,7 @@ function llenarBlancos(casilla) {
         if (n < 1 || n > filas || m < 1 || m > columnas) {
             console.log("este no existe")
         } else {
-            let lugar = document.getElementById(n + "" + m)
+            let lugar = document.getElementById(n + "-" + m)
             let real = sacarInformacion(lugar.id)
             lugar.removeAttribute("onclick")
             lugar.removeAttribute("oncontextmenu")
@@ -240,11 +241,12 @@ function marcar(casilla) {
 
 function darNumeros() {
     for (const mina of incognitas) {
-        let n = mina[0]
-        let m = mina[1]
+        let originario = mina.split("-")
+        let n = originario[0]
+        let m = originario[1]
         for (const datos of patron) {
-            n = mina[0]
-            m = mina[1]
+            n = originario[0]
+            m = originario[1]
             switch (datos[0]) {
                 case "i": n = n; break;
                 case "r": n++; break
@@ -268,12 +270,12 @@ function darNumeros() {
                 // if (!lugar.classList.contains("mina")) {
                 //     lugar.classList.add("numero")
                 //     lugar.innerHTML++
-                let lugar = sacarInformacion(n + "" + m)
+                let lugar = sacarInformacion(n + "-" + m)
                 console.log("lugar");
                 console.log(lugar);
                 if (lugar != "🧨") {
                     lugar++
-                    meterInformacion(n + "" + m, lugar, true)
+                    meterInformacion(n + "-" + m, lugar, true)
                 }
             }
         }
