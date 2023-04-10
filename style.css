@@ -1,7 +1,7 @@
 td, table {
     border: 1px solid black;
 }
-h1, h3 {
+h1, h3, p {
     text-align: center;
 }
 table {
