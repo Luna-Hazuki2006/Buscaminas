@@ -1,7 +1,7 @@
 # version: 'v2.40.3-desktop.1'
 services:
     nginx:
-        image: nginx:alpine 
+        image: lunahazuki2006/buscaminas:latest 
         container_name: buscaminas
         ports:
             - "8080:80" 
